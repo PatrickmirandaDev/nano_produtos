@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Vector;
 
-import static repositorios.CategoriaCollectionRepo.save;
 
 public class ProdutoCollectionRepo {
     private static List<Produto> produtos;
@@ -23,7 +22,7 @@ public class ProdutoCollectionRepo {
                 .setDataCadastro(LocalDateTime.now())
                 .setPreco(BigDecimal.valueOf(3500));
 
-    save(smartphone);
+        save(smartphone);
 
     }
     public static Produto save(Produto produto){
@@ -35,5 +34,11 @@ public class ProdutoCollectionRepo {
             JOptionPane.showMessageDialog(null,"Ja existe um produto cadastrado com o mesmo nome");
             return null;
         }
+    }
+    public static Produto findById(Long id){
+        return produtos.stream()
+                .filter(produto -> produto.getId()!=null && produto.getId().equals(id))
+                .findFirst()
+                .orElse(null);
     }
 }

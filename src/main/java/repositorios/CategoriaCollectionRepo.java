@@ -16,20 +16,23 @@ public class CategoriaCollectionRepo {
         Categoria eletronicos = new Categoria("Eletronicos");
         Categoria eletrodomestico = new Categoria("Eletrodomestico");
         Categoria literatura = new Categoria("Literatura");
+        Categoria Ereader = new Categoria("E-reader");
 
-        categorias.add(eletronicos);
-        categorias.add(eletrodomestico);
-        categorias.add(literatura);
+
+        save(new Categoria("Eletronicos"));
+        save(new Categoria("Eletrodomestico"));
+        save(new Categoria("Literatura"));
+        save(new Categoria("E-reader"));
     }
 
     // metodos acessores
         public static List<Categoria> findAll() {
             return categorias;
         }
-// consulta pelo ID
+// consulta pelo ID // !=null garante que nao quebre o programa caso nao encotre o id
         public static Categoria findById(Long id) {
             return categorias.stream()
-                    .filter(c -> c.getId().equals(id))
+                    .filter(c -> c.getId() !=null && c.getId().equals(id))
                     .findFirst()
                     .orElse(null);
         }
