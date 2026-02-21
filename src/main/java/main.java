@@ -2,35 +2,63 @@ import model.Categoria;
 import model.Produto;
 import repositorios.CategoriaCollectionRepo;
 import repositorios.ProdutoCollectionRepo;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.List;
+import view.CategoriaView;
+import view.Opcao;
+import view.OpcaoView;
+import view.ProdutoView;
 
 void main() {
-    // 1. Busca a categoria correta (Eletronicos)
-    List<Categoria> listaGeral = CategoriaCollectionRepo.findByNome("Eletronicos");
+    Opcao opcao = null;
 
-    // Verificação de segurança para evitar o erro de "Index 0 out of bounds"
-    if (listaGeral.isEmpty()) {
-        System.out.println("Erro: A categoria 'Eletronicos' não foi encontrada no repositório.");
-        return;
-    }
+    do {
+        opcao = OpcaoView.select();
+        switch (opcao) {
+            case CADASTRAR_CATEGORIA -> cadastrarCategoria();
 
-    Produto produto = new Produto();
-    produto.setNome("google pixel 9")
-            .setDescricao("smartphone")
-            // 2. Pegamos a categoria da lista validada
-            .setCategoria(listaGeral.get(0))
-            .setDataCadastro(LocalDateTime.now())
-            .setPreco(BigDecimal.valueOf(800));
+            case CADASTRAR_PRODUTO -> cadastrarProduto();
 
-    // 3. Salvamos o produto
-    Produto produtoSalva = ProdutoCollectionRepo.save(produto);
+            case CONSULTAR_PRODUTO_POR_ID -> consultarProdutoId();
 
-    // 4. Verificamos se o produtoSalva não é nulo antes de imprimir
-    if (produtoSalva != null) {
-        System.out.println("ID: " + produtoSalva.getId() + " | Nome do produto: " + produtoSalva.getNome());
-    } else {
-        System.out.println("Erro ao salvar: Produto provavelmente já existe.");
-    }
+            case CONSULTAR_PRODUTO_POR_CATEGORIA -> consultarProdutoCategoria();
+
+            case ALTERAR_PRODUTO -> alterarProduto();
+
+            case ENCERRAR_SISTEMA -> encerrarSistema();
+
+        }
+    }while (opcao != Opcao.ENCERRAR_SISTEMA);
 }
+
+private void encerrarSistema() {
+    IO.println("Encerrando Sistema...");
+    System.exit(0);
+}
+
+private void alterarProduto() {
+    Produto produto = ProdutoView.select(null);
+    ProdutoView.update(produto);
+}
+
+private void consultarProdutoCategoria() {
+}
+
+private void consultarProdutoId() {
+}
+
+private void cadastrarProduto() {
+    Produto produto = ProdutoView.form(new Produto());
+    ProdutoCollectionRepo.save(produto);
+    ProdutoView.sucesso();
+
+
+}
+
+private void cadastrarCategoria() {
+    CategoriaView view = new CategoriaView();
+    Categoria categoria = view.form(new Categoria());
+    CategoriaCollectionRepo.save(categoria);
+    view.sucesso(categoria);
+}
+
+
+

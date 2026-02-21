@@ -25,6 +25,12 @@ public class ProdutoCollectionRepo {
         save(smartphone);
 
     }
+    public static List<Produto> findAll()
+    {
+        return produtos;
+    }
+
+
     public static Produto save(Produto produto){
         if(!produtos.contains(produto)) {
             produto.setId((long) produtos.size()+1);
@@ -41,4 +47,5 @@ public class ProdutoCollectionRepo {
                 .findFirst()
                 .orElse(null);
     }
+
 }
