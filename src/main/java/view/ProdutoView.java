@@ -80,7 +80,7 @@ public class ProdutoView {
         show(produto);
     }
 
-    private static void show(Produto produto) {
+    public static void show(Produto produto) {
         IO.println(produto);
         String formatText = String.format("PRODUTO: " + produto.getNome() + System.lineSeparator() + "DESCRIÇÃO: " + produto.getDescricao() + System.lineSeparator() + "CATEGORIA: " + produto.getCategoria().toString() + System.lineSeparator() + "PREÇO: %,.2f", produto.getPreco());
         JOptionPane.showMessageDialog(null,formatText);

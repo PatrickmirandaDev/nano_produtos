@@ -7,6 +7,8 @@ import view.Opcao;
 import view.OpcaoView;
 import view.ProdutoView;
 
+import javax.swing.*;
+
 void main() {
     Opcao opcao = null;
 
@@ -40,9 +42,33 @@ private void alterarProduto() {
 }
 
 private void consultarProdutoCategoria() {
+    Categoria categoria = CategoriaView.select(null);
+    List<Produto> produtos = ProdutoCollectionRepo.findByCategoria(categoria);
+
+    // CORREÇÃO: Verifica se a lista NÃO está vazia para exibir
+    if (produtos != null && !produtos.isEmpty()) {
+        produtos.forEach(ProdutoView::show);
+    } else {
+        JOptionPane.showMessageDialog(null, "Nenhum produto encontrado!");
+    }
 }
 
 private void consultarProdutoId() {
+    Long id = -1L;
+    do {
+        try {
+            id = Long.parseLong(JOptionPane.showInputDialog("Informe o id do produto:"));
+        }catch (Exception ex){
+            JOptionPane.showMessageDialog(null,"Erro ao tentar ler o id do produto!");
+        }
+    }while(id <= 0);
+
+    Produto produto = ProdutoCollectionRepo.findById(id);
+    if (produto != null) {
+        ProdutoView.show(produto);
+    }else {
+        JOptionPane.showMessageDialog(null,"Produto Nao Encontrado!");
+    }
 }
 
 private void cadastrarProduto() {
